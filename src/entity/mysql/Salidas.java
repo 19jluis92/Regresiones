@@ -6,6 +6,7 @@
 package entity.mysql;
 
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,6 +14,8 @@ import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -29,7 +32,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Salidas.findByNombre", query = "SELECT s FROM Salidas s WHERE s.nombre = :nombre"),
     @NamedQuery(name = "Salidas.findByDireccion", query = "SELECT s FROM Salidas s WHERE s.direccion = :direccion"),
     @NamedQuery(name = "Salidas.findByTelefono", query = "SELECT s FROM Salidas s WHERE s.telefono = :telefono"),
-    @NamedQuery(name = "Salidas.findByCodigo", query = "SELECT s FROM Salidas s WHERE s.codigo = :codigo")})
+    @NamedQuery(name = "Salidas.findByCodigo", query = "SELECT s FROM Salidas s WHERE s.codigo = :codigo"),
+    @NamedQuery(name = "Salidas.findByFecha", query = "SELECT s FROM Salidas s WHERE s.fecha = :fecha")})
 public class Salidas implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -48,6 +52,9 @@ public class Salidas implements Serializable {
     private String telefono;
     @Column(name = "codigo")
     private String codigo;
+    @Column(name = "fecha")
+    @Temporal(TemporalType.DATE)
+    private Date fecha;
 
     public Salidas() {
     }
@@ -107,6 +114,14 @@ public class Salidas implements Serializable {
 
     public void setCodigo(String codigo) {
         this.codigo = codigo;
+    }
+
+    public Date getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(Date fecha) {
+        this.fecha = fecha;
     }
 
     @Override
