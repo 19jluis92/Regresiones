@@ -25,17 +25,19 @@ public class CsvProcessor {
         try {
 
             br = new BufferedReader(new FileReader(file));
+            boolean flag=true;
             while ((line = br.readLine()) != null) {
-                
-                
-              
-                   
-                        this.process(line, listResult);
-                        break;
-                    
-                    
 
-                
+                   if(flag){
+                   flag = false;
+                   }else{
+                    String cvsSplitBy = ";";
+                           String[] row = line.split(cvsSplitBy);
+                        GeneralData numeroTemp = new GeneralData();
+                        numeroTemp.venta= Double.parseDouble(row[0]);
+                        numeroTemp.fecha=new Date( row[1]);
+                        listResult.add(numeroTemp);
+                   }
 
             }
 
@@ -61,17 +63,7 @@ public class CsvProcessor {
 
     }
     
-    private void process(String line, ArrayList<GeneralData> listResult){
-            String cvsSplitBy = ",";
-            String[] row = line.split(cvsSplitBy);
-               
-                    
-
-                        GeneralData numeroTemp = new GeneralData();
-
-               
     
-    }
     
     
         

@@ -13,7 +13,7 @@ import java.util.Date;
  */
 public class GeneralData {
     
-    public Integer venta;
+    public Double venta;
     
     public Date fecha;
     

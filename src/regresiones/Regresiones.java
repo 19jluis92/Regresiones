@@ -5,7 +5,14 @@
  */
 package regresiones;
 
+import BLL.general.Regresion;
+import Repository.general.SalidasJpaController;
 import com.numeros.csv.CsvProcessor;
+import entity.mysql.Salidas;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
@@ -15,24 +22,43 @@ import javax.swing.JOptionPane;
  */
 public class Regresiones {
 
-   static CsvProcessor csv;
+    static CsvProcessor csv;
+
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
         // TODO code application logic here
-        
-        try{
+
+        try {
             JFileChooser choose = new JFileChooser();
-			
-			choose.showOpenDialog(null);
-			
-			  csv = new CsvProcessor();
-                          csv.process(choose.getSelectedFile(), 0);
-                        }catch(Exception e)
-                        {
-                        JOptionPane.showMessageDialog(null,"Error al cargar el archivo","Message",JOptionPane.INFORMATION_MESSAGE);
-                        }
+
+            choose.showOpenDialog(null);
+
+            csv = new CsvProcessor();
+            ArrayList<GeneralData> listcsv = csv.process(choose.getSelectedFile(), 0);
+            List<Salidas> listSalidasMysql = (new SalidasJpaController()).findSalidasEntities();
+
+            for (Salidas data : listSalidasMysql) {
+                GeneralData temp = new GeneralData();
+                temp.fecha = data.getFecha();
+                temp.venta = data.getVenta();
+                listcsv.add(temp);
+            }
+            listcsv.stream().map(x -> x.venta).collect(Collectors.toList());
+            Double []x = new Double[listcsv.size()];
+             Double []y = new Double[listcsv.size()];
+                        x =    listcsv.stream().map(s -> s.venta).collect(Collectors.toList()).toArray(new Double[listcsv.size()]);
+              Integer i =1;
+              for(GeneralData data : listcsv){
+                    y[i-1]=(double)i;
+                    i++;
+              }          
+           Regresion regresionLineal = new Regresion(x, y);
+           regresionLineal.lineal();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e.getStackTrace(), "Message", JOptionPane.INFORMATION_MESSAGE);
+        }
     }
-    
+
 }

@@ -5,6 +5,8 @@
  */
 package BLL.general;
 
+import java.util.stream.Stream;
+
 /**
  *
  * @author jluis
@@ -17,6 +19,12 @@ public class Regresion {
     public Regresion(double[] x, double[] y) {
         this.x=x;
         this.y=y;
+        n=x.length; //número de datos
+    }
+
+    public Regresion(Double[] x, Double[] y) {
+         this.x= Stream.of(x).mapToDouble(Double::doubleValue).toArray();
+        this.y= Stream.of(y).mapToDouble(Double::doubleValue).toArray();
         n=x.length; //número de datos
     }
     public void lineal(){
