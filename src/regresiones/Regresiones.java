@@ -5,9 +5,12 @@
  */
 package regresiones;
 
+import BLL.general.MultipleLinearRegression;
 import BLL.general.Regresion;
+import Repository.general.LinealJpaController;
 import Repository.general.SalidasJpaController;
 import com.numeros.csv.CsvProcessor;
+import entity.mysql.Lineal;
 import entity.mysql.Salidas;
 import java.util.ArrayList;
 import java.util.Date;
@@ -56,6 +59,18 @@ public class Regresiones {
               }          
            Regresion regresionLineal = new Regresion(x, y);
            regresionLineal.lineal();
+           regresionLineal.correlacion();
+           
+           //RESULTADO RE REGRESION LINEAL
+           Lineal lineal = new Lineal();
+           lineal.setOrdenada( regresionLineal.a);
+           lineal.setPendiente(regresionLineal.b);
+           (new LinealJpaController()).create(lineal);
+           
+           //para calcular x es   -> x = a+(b * y)
+           
+           //REGRESION MULTIVARIABLE
+          
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e.getStackTrace(), "Message", JOptionPane.INFORMATION_MESSAGE);
         }

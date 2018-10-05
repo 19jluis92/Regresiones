@@ -29,6 +29,10 @@ public class LinealJpaController implements Serializable {
     }
     private EntityManagerFactory emf = null;
 
+    public LinealJpaController(EntityManagerFactory emf) {
+        this.emf = emf;
+    }
+
     public EntityManager getEntityManager() {
         return emf.createEntityManager();
     }

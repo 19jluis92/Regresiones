@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 
+import Repository.general.LinealJpaController;
 import Repository.general.SalidasJpaController;
 import entity.mysql.Salidas;
 import java.util.List;
@@ -41,6 +42,19 @@ public class TestDB {
          SalidasJpaController jpa = new SalidasJpaController(emf);
          
          List<Salidas> result = jpa.findSalidasEntities();
+         }catch(Exception e)
+         {
+             System.out.println(e.getStackTrace());
+         }
+     }
+     
+          @Test
+     public void test2() {
+         try{
+          EntityManagerFactory emf = Persistence.createEntityManagerFactory("RegresionesPU");
+         LinealJpaController jpa = new LinealJpaController(emf);
+         
+         jpa.findLinealEntities();
          }catch(Exception e)
          {
              System.out.println(e.getStackTrace());

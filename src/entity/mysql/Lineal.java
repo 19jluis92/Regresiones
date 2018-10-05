@@ -27,8 +27,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "Lineal.findAll", query = "SELECT l FROM Lineal l"),
     @NamedQuery(name = "Lineal.findById", query = "SELECT l FROM Lineal l WHERE l.id = :id"),
-    @NamedQuery(name = "Lineal.findByX", query = "SELECT l FROM Lineal l WHERE l.x = :x"),
-    @NamedQuery(name = "Lineal.findByY", query = "SELECT l FROM Lineal l WHERE l.y = :y"),
     @NamedQuery(name = "Lineal.findByPendiente", query = "SELECT l FROM Lineal l WHERE l.pendiente = :pendiente"),
     @NamedQuery(name = "Lineal.findByOrdenada", query = "SELECT l FROM Lineal l WHERE l.ordenada = :ordenada")})
 public class Lineal implements Serializable {
@@ -39,14 +37,11 @@ public class Lineal implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
-    @Column(name = "x")
-    private Long x;
-    @Column(name = "y")
-    private Long y;
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "pendiente")
-    private Long pendiente;
+    private double pendiente;
     @Column(name = "ordenada")
-    private Long ordenada;
+    private double ordenada;
 
     public Lineal() {
     }
@@ -63,35 +58,19 @@ public class Lineal implements Serializable {
         this.id = id;
     }
 
-    public Long getX() {
-        return x;
-    }
-
-    public void setX(Long x) {
-        this.x = x;
-    }
-
-    public Long getY() {
-        return y;
-    }
-
-    public void setY(Long y) {
-        this.y = y;
-    }
-
-    public Long getPendiente() {
+    public double getPendiente() {
         return pendiente;
     }
 
-    public void setPendiente(Long pendiente) {
+    public void setPendiente(double pendiente) {
         this.pendiente = pendiente;
     }
 
-    public Long getOrdenada() {
+    public double getOrdenada() {
         return ordenada;
     }
 
-    public void setOrdenada(Long ordenada) {
+    public void setOrdenada(double ordenada) {
         this.ordenada = ordenada;
     }
 
