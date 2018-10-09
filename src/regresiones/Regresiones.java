@@ -19,6 +19,19 @@ import java.util.stream.Collectors;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.lang.reflect.Type;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Locale;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.google.gson.stream.JsonReader;
+
 /**
  *
  * @author jluis
@@ -30,7 +43,7 @@ public class Regresiones {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
+    public static void main(String[] args)  throws IOException, ParseException {
         // TODO code application logic here
 
         try {
@@ -42,6 +55,8 @@ public class Regresiones {
             ArrayList<GeneralData> listcsv = csv.process(choose.getSelectedFile(), 0);
             List<Salidas> listSalidasMysql = (new SalidasJpaController()).findSalidasEntities();
 
+            listcsv.addAll(getJsonData());
+            
             for (Salidas data : listSalidasMysql) {
                 GeneralData temp = new GeneralData();
                 temp.fecha = data.getFecha();
@@ -75,5 +90,67 @@ public class Regresiones {
             JOptionPane.showMessageDialog(null, e.getStackTrace(), "Message", JOptionPane.INFORMATION_MESSAGE);
         }
     }
+    
+    public static ArrayList<GeneralData> getJsonData()  throws IOException, ParseException {
+    	ArrayList<GeneralData> listcsv = new ArrayList<>();
+    	JFileChooser choose_json = new JFileChooser();
+    	choose_json.showOpenDialog(null);
+    	
+    	File file_json = choose_json.getSelectedFile();
+    	if(file_json != null) {
+    		
+    		Gson gson = new Gson();
+    		JsonReader reader = new JsonReader(new FileReader(file_json.getAbsolutePath()));
+    		
+    		Type listType = new TypeToken<List<Sales>>() {}.getType();
+    		
+    		List<Sales> sales = gson.fromJson(reader, listType);
+    		
+    		DateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+    		for(Sales s : sales) {
+    			GeneralData temp = new GeneralData();
+    			temp.fecha = format.parse(s.getDate());
+                temp.venta = s.getTotal();
+                listcsv.add(temp);
+    		}
+    		
+    		reader.close();
+    		
+    	}else {
+    		System.out.println("File was null for json selection");
+    	}
+    	return listcsv;
+    }
 
+}
+
+class Sales{
+	private String id;
+	private double total;
+	private int product;
+	private String date;
+	public String getId() {
+		return id;
+	}
+	public void setId(String id) {
+		this.id = id;
+	}
+	public double getTotal() {
+		return total;
+	}
+	public void setTotal(double total) {
+		this.total = total;
+	}
+	public int getProduct() {
+		return product;
+	}
+	public void setProduct(int product) {
+		this.product = product;
+	}
+	public String getDate() {
+		return date;
+	}
+	public void setDate(String date) {
+		this.date = date;
+	}	
 }
