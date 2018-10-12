@@ -14,7 +14,7 @@ import java.util.Date;
 public class GeneralData {
     
     public Double venta;
-    
+    public Double segundaVenta;
     public Date fecha;
     
 
